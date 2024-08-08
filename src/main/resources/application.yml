@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  tomcat:
+    connection-timeout: 30s
+    threads:
+      max: 100
+      min-spare: 100
+    accesslog:
+      enabled: true
+      suffix: log
+      prefix: access_log
+      rename-on-rotate: true
+cors:
+  allowed-origins:
+    local: http://localhost:3000

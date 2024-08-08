@@ -38,6 +38,10 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:kafka")
 	testImplementation("org.testcontainers:mariadb")
+	testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+	testImplementation("io.kotest:kotest-property:5.9.1")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+	testImplementation("io.mockk:mockk:1.13.10")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -49,4 +53,12 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+	archiveBaseName.set("app")
+	archiveVersion.set("") // 버전 번호를 제거
+	archiveClassifier.set("") // 분류자를 제거
+}
+tasks.named<Jar>("jar") {
+	enabled = false // 기본 jar task를 비활성화
 }
