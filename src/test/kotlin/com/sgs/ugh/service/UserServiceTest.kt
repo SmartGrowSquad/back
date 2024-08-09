@@ -9,11 +9,13 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.security.crypto.password.PasswordEncoder
 
 
 class UserServiceTest: DescribeSpec({
     val userRepository = mockk<UserRepository>()
-    val userService = UserService(userRepository)
+    val passwordEncoder = mockk<PasswordEncoder>()
+    val userService = UserService(userRepository, passwordEncoder)
 
     describe("User Service class") {
 
@@ -22,7 +24,9 @@ class UserServiceTest: DescribeSpec({
 
             context("new email") {
                 every { userRepository.findUserByEmail( any() ) } returns null
-                every { userRepository.save( any() ) } returns User(1, "user name", "user@email.com", "password")
+                every { passwordEncoder.encode( any() ) } returns "encoded password"
+                every { userRepository.save( any() ) } returns User(1, "user name", "user@email.com", passwordEncoder.encode("password"))
+
 
                 it("return CreateUserResponse") {
                     val res = userService.saveUser(req)
@@ -30,10 +34,13 @@ class UserServiceTest: DescribeSpec({
                     res.id shouldBe 1
                     res.name shouldBe "user name"
                     res.email shouldBe "user@email.com"
+
+
                 }
             }
             context("not new email") {
                 every { userRepository.findUserByEmail( any() ) } throws AlreadyExistException()
+                every { passwordEncoder.encode( any() ) } returns "encoded password"
                 every { userRepository.save( any() ) } returns User(1, "user name", "user@email.com", "password")
 
                 it("throw exception") {

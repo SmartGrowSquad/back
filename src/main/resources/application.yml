@@ -16,3 +16,7 @@ server:
 cors:
   allowed-origins:
     local: http://localhost:3000
+jwt:
+  secret-key: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+  expired_time: 86400000
+  refresh_time: 1209600033

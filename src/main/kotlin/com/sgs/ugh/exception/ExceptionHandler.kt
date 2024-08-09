@@ -1,6 +1,5 @@
 package com.sgs.ugh.exception
 
-import com.sgs.ugh.controller.TestController
 import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ExceptionHandler {
-    private val log = LoggerFactory.getLogger(TestController::class.java)
+    private val log = LoggerFactory.getLogger(ExceptionHandler::class.java)
     /**
      * 잘못된 요청 EXCEPTION
      */
@@ -42,6 +41,7 @@ class ExceptionHandler {
      */
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<Exception> {
-        return ResponseEntity.internalServerError().body(Exception("exception fallback"))
+        log.info(ex.message)
+        return ResponseEntity.internalServerError().body(Exception(ex.message))
     }
 }

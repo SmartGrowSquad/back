@@ -1,9 +1,15 @@
 package com.sgs.ugh
 
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.kotest.core.spec.style.DescribeSpec
+import org.json.JSONObject
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.web.servlet.MockMvc
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.MariaDBContainer
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -11,7 +17,11 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
-abstract class AbstractIntegrationAppTest {
+abstract class AbstractIntegrationAppTest: DescribeSpec() {
+    @Autowired
+    lateinit var mockMvc: MockMvc
+
+    val mapper = ObjectMapper()
     companion object {
         private val redisContainer = GenericContainer<Nothing>("redis:6-alpine")
             .apply { withExposedPorts(6379) }
@@ -33,6 +43,11 @@ abstract class AbstractIntegrationAppTest {
             registry.add("spring.datasource.username", mariaDBContainer::getUsername)
             registry.add("spring.datasource.password", mariaDBContainer::getPassword)
 
+        }
+
+        init {
+            redisContainer.start()
+            mariaDBContainer.start()
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.sgs.ugh.service
 
-import com.sgs.ugh.controller.TestController
 import com.sgs.ugh.controller.request.CreateUserRequest
 import com.sgs.ugh.controller.response.CreateUserResponse
 import com.sgs.ugh.controller.response.GetUserResponse
@@ -8,14 +7,16 @@ import com.sgs.ugh.entity.User
 import com.sgs.ugh.exception.AlreadyExistException
 import com.sgs.ugh.repository.UserRepository
 import org.slf4j.LoggerFactory
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
-    private val log = LoggerFactory.getLogger(TestController::class.java)
+    private val log = LoggerFactory.getLogger(UserService::class.java)
     /**
      * 유저 생성
      * @param req [CreateUserRequest]
@@ -24,15 +25,18 @@ class UserService(
      */
     @Transactional
     fun saveUser(req: CreateUserRequest): CreateUserResponse {
+        val encodedPassword = passwordEncoder.encode(req.password)
+
         val user = User(
             name = req.name,
             email = req.email,
-            password = req.password
+            password = encodedPassword
         )
 
         userRepository.findUserByEmail(user.email)?.let { throw AlreadyExistException() }
 
         val savedUser = userRepository.save(user)
+
         return CreateUserResponse(
             savedUser.id!!,
             savedUser.name,

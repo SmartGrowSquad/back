@@ -22,5 +22,4 @@ class User(
 
     @Column(nullable = false)
     val password: String
-
 )
