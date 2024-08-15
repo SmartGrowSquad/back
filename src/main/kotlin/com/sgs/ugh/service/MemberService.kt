@@ -1,9 +1,10 @@
 package com.sgs.ugh.service
 
 import com.sgs.ugh.controller.request.CreateMemberRequest
-import com.sgs.ugh.controller.response.GetMemberResponse
+import com.sgs.ugh.dto.MemberDto
 import com.sgs.ugh.entity.Member
 import com.sgs.ugh.exception.AlreadyExistException
+import com.sgs.ugh.exception.MemberNotFoundException
 import com.sgs.ugh.repository.MemberRepository
 import com.sgs.ugh.utils.Role
 import org.slf4j.LoggerFactory
@@ -35,7 +36,7 @@ class MemberService(
             role = Role.ROLE_ADMIN.name,
         )
 
-        memberRepository.findUserByEmail(user.email)?.let { throw AlreadyExistException() }
+        memberRepository.findMemberByEmail(user.email)?.let { throw AlreadyExistException() }
 
         val savedUser = memberRepository.save(user)
 
@@ -49,27 +50,30 @@ class MemberService(
     /**
      * 유저 조회
      * @param userId [Long]
-     * @return [GetMemberResponse]
+     * @return [MemberDto]
      * @exception RuntimeException
-     *
-     *
      */
+    fun getMemberDetail(userId: Long): MemberDto {
+        val foundMember = memberRepository.findMemberById(userId) ?: throw MemberNotFoundException()
 
-    fun getMember(userId: Long): GetMemberResponse {
-        val findUser = memberRepository.findUserById(userId) ?: throw RuntimeException("not exist user")
-
-        return GetMemberResponse(findUser.id!!, findUser.name, findUser.email )
+        return MemberDto(
+            foundMember.id!!,
+            foundMember.name,
+            foundMember.email,
+            foundMember.address,
+            foundMember.purchases,
+        )
     }
     fun updateUser() {}
     /**
      * 유저 삭제
      * @param userId [Long]
-     * @return [GetMemberResponse]
+     * @return [Unit]
      * @exception RuntimeException
      */
     @Transactional
     fun deleteMember(userId: Long) {
-        memberRepository.findUserById(userId) ?: throw RuntimeException("not exist user")
+        memberRepository.findMemberById(userId) ?: throw RuntimeException("not exist user")
         memberRepository.deleteById(userId)
     }
 }

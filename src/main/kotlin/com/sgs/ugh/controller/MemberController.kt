@@ -1,7 +1,7 @@
 package com.sgs.ugh.controller
 
 import com.sgs.ugh.controller.request.CreateMemberRequest
-import com.sgs.ugh.controller.response.GetMemberResponse
+import com.sgs.ugh.dto.MemberDto
 import com.sgs.ugh.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -24,8 +24,8 @@ class MemberController(
     @GetMapping("/{memberId}")
     fun getMember(
         @PathVariable memberId: Long
-    ): ResponseEntity<GetMemberResponse> {
-        val memberDetail = memberService.getMember(memberId)
+    ): ResponseEntity<MemberDto> {
+        val memberDetail = memberService.getMemberDetail(memberId)
         return ResponseEntity(memberDetail, HttpStatus.OK)
     }
 

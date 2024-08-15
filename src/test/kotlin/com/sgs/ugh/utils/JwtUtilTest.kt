@@ -1,7 +1,6 @@
 package com.sgs.ugh.utils
 
 import com.sgs.ugh.dto.CustomerDto
-import com.sgs.ugh.dto.UserDto
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -14,7 +13,7 @@ class JwtUtilTest: DescribeSpec({
     val secretKey = "7e8439e771be369dcb8b25ef00a2ea8782511c68260671ac75fcf8459a068618cd2eedf9880b44a2a677cde5f5f85419bf5b264aecf084e5017b2b86451e6e1c"
     val key: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
     val jwtUtil = JwtUtil(secretKey, 100000, 100000)
-    val userDto = CustomerDto(1, "name", "test@email.com", "encoded password")
+    val userDto = CustomerDto(1, "name",  "encoded password", "test@email.com", Role.ROLE_CUSTOMER.name)
 
     describe("JWT Util Test") {
 

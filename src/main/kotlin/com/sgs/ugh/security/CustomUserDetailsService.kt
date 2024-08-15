@@ -11,9 +11,16 @@ class CustomUserDetailsService(
     private val memberRepository: MemberRepository,
 ): UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
-        val user = memberRepository.findUserByEmail(email) ?: throw RuntimeException("해당하는 유저가 없습니다.")
+        val member = memberRepository.findUserByEmail(email) ?: throw RuntimeException("해당하는 유저가 없습니다.")
 
-        val dto = CustomerDto(user.id!!, user.name, user.email, user.password)
+        val dto = CustomerDto(
+            member.id!!,
+            member.name,
+            member.password,
+            member.email,
+            member.role
+
+        )
         return CustomUserDetails(dto)
     }
 }

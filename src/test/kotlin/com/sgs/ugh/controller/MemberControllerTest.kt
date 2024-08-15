@@ -28,7 +28,7 @@ class MemberControllerTest: AbstractIntegrationAppTest() {
                     val jsonRequest = mapper.writeValueAsString(request)
 
                     every { encoder.matches(any(), any()) } returns true
-                    every { memberRepository.findUserByEmail( any() ) } returns Member("username", request.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
+                    every { memberRepository.findMemberById( any() ) } returns Member("username", request.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
                     val response = mockMvc.post("/v1/auth/sign-in") {
                         contentType = MediaType.APPLICATION_JSON

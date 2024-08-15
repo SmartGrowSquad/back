@@ -24,7 +24,7 @@ class UserServiceTest: DescribeSpec({
             val req = CreateMemberRequest("user name", "user@email.com", "password", "address")
 
             context("new email") {
-                every { memberRepository.findUserByEmail( any() ) } returns null
+                every { memberRepository.findMemberByEmail( any() ) } returns null
                 every { passwordEncoder.encode( any() ) } returns "encoded password"
                 every { memberRepository.save( any() ) } returns Member("username", req.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
@@ -39,7 +39,7 @@ class UserServiceTest: DescribeSpec({
                 }
             }
             context("not new email") {
-                every { memberRepository.findUserByEmail( any() ) } throws AlreadyExistException()
+                every { memberRepository.findMemberByEmail( any() ) } throws AlreadyExistException()
                 every { passwordEncoder.encode( any() ) } returns "encoded password"
                 every { memberRepository.save( any() ) } returns Member("username", req.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
@@ -56,9 +56,9 @@ class UserServiceTest: DescribeSpec({
         describe("getUser method") {
             val userId: Long = 1
             context("exist user") {
-                every { memberRepository.findUserById( any() ) } returns Member("username", "email@email.com", "passcode", "address", null, Role.ROLE_CUSTOMER.name)
+                every { memberRepository.findMemberById( any() ) } returns Member("username", "email@email.com", "passcode", "address", null, Role.ROLE_CUSTOMER.name)
                 it("return GetUserResponse") {
-                    val res = memberService.getMember(userId)
+                    val res = memberService.getMemberDetail(userId)
 
                     res.id shouldBe 1
                     res.name shouldBe "user name"
@@ -66,10 +66,10 @@ class UserServiceTest: DescribeSpec({
                 }
             }
             context("not exist user") {
-                every { memberRepository.findUserById( any() ) } returns null
+                every { memberRepository.findMemberById( any() ) } returns null
                 it("throw exception") {
                     val exception = shouldThrow<RuntimeException> {
-                        memberService.getMember(userId)
+                        memberService.getMemberDetail(userId)
                     }
                     exception.message shouldBe "not exist user"
                 }
@@ -79,7 +79,7 @@ class UserServiceTest: DescribeSpec({
             val userId: Long = 1
 
             context("not exist user") {
-                every { memberRepository.findUserById( any() ) } returns null
+                every { memberRepository.findMemberById( any() ) } returns null
                 it("throw exception") {
                     val exception = shouldThrow<RuntimeException> {
                         memberService.deleteMember(userId)

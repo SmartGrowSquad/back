@@ -36,6 +36,11 @@ class ExceptionHandler {
         return ResponseEntity(AlreadyExistException(), HttpStatus.CONFLICT)
     }
 
+    @ExceptionHandler(MemberNotFoundException::class)
+    fun handleMemberNotFoundException(ex: MemberNotFoundException): ResponseEntity<MemberNotFoundException>{
+        return ResponseEntity(MemberNotFoundException(), HttpStatus.NOT_FOUND)
+    }
+
     /**
      * fall back Exception
      */
