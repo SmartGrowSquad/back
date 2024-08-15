@@ -46,6 +46,11 @@ class JwtUtilTest: DescribeSpec({
                 }
             }
         }
+        describe("") {
+            context("RFT 재발급") {
+
+            }
+        }
 
     }
 })

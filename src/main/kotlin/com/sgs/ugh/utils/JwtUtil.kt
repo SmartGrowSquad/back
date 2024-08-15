@@ -28,6 +28,9 @@ class JwtUtil(
         return createToken(user, refreshTime)
     }
 
+    /**
+     * @TODO 유효한 RFT 로 ACT 재발급 시 RFT 재발행 로직 추가
+     */
     fun reIssueAccessToken(oldACT: String): String {
 
         val claims = parseClaims(oldACT)

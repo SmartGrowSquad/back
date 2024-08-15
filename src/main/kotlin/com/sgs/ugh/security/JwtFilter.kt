@@ -65,6 +65,7 @@ class JwtFilter(
                 if(jwtUtil.validateToken(refreshToken)) {
                     // Reissue act
                     val newACT = jwtUtil.reIssueAccessToken(token)
+                    val newRFT = jwtUtil
 
                     val userEmail = jwtUtil.getUserEmail(newACT)
 

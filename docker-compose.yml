@@ -1,25 +1,6 @@
 version: '3.0'
 services:
-  testback:
+  ugh-spring:
     image: 097c8f8f460730e60e2b696d133b87e78f3edd692e170896062df03fa2353253
     ports:
       - "8080:8080"
-  mariadb:
-    image: mariadb
-    ports:
-      - "3306:3306"
-    command:
-      - '--character-set-server=utf8mb4'
-      - '--collation-server=utf8mb4_unicode_ci'
-    environment:
-      MARIADB_ROOT_PASSWORD: password
-      MARIADB_DATABASE: test
-  redis:
-    image: redis
-
-#  prometheus:
-#    image: bitnami/prometheus
-#
-#  grafana:
-#    image: grafana
-#
