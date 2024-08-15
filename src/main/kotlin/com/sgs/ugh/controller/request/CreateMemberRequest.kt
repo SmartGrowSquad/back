@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class CreateUserRequest(
+data class CreateMemberRequest(
     @NotNull
     @NotBlank
     val name: String,
@@ -14,5 +14,9 @@ data class CreateUserRequest(
     val email: String,
 
     @NotNull
-    val password: String
+    val password: String,
+
+    @NotNull
+    val address: String,
+
 )

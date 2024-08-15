@@ -20,7 +20,7 @@ class Member(
     var address: String,
 
     @Column(nullable = true)
-    var cLocate: String,
+    var cLocate: String?,
 
     @Column(nullable = false)
     val role: String,

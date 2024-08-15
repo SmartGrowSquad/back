@@ -1,9 +1,10 @@
 package com.sgs.ugh.service
 
-import com.sgs.ugh.controller.request.CreateUserRequest
-import com.sgs.ugh.entity.User
+import com.sgs.ugh.controller.request.CreateMemberRequest
+import com.sgs.ugh.entity.Member
 import com.sgs.ugh.exception.AlreadyExistException
-import com.sgs.ugh.repository.UserRepository
+import com.sgs.ugh.repository.MemberRepository
+import com.sgs.ugh.utils.Role
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -13,39 +14,38 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 
 class UserServiceTest: DescribeSpec({
-    val userRepository = mockk<UserRepository>()
+    val memberRepository = mockk<MemberRepository>()
     val passwordEncoder = mockk<PasswordEncoder>()
-    val userService = UserService(userRepository, passwordEncoder)
+    val memberService = MemberService(memberRepository, passwordEncoder)
 
     describe("User Service class") {
 
         describe("saveUser method") {
-            val req = CreateUserRequest("user name", "user@email.com", "password")
+            val req = CreateMemberRequest("user name", "user@email.com", "password", "address")
 
             context("new email") {
-                every { userRepository.findUserByEmail( any() ) } returns null
+                every { memberRepository.findUserByEmail( any() ) } returns null
                 every { passwordEncoder.encode( any() ) } returns "encoded password"
-                every { userRepository.save( any() ) } returns User(1, "user name", "user@email.com", passwordEncoder.encode("password"))
+                every { memberRepository.save( any() ) } returns Member("username", req.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
 
                 it("return CreateUserResponse") {
-                    val res = userService.saveUser(req)
+                    val res = memberService.saveMember(req)
 
                     res.id shouldBe 1
                     res.name shouldBe "user name"
                     res.email shouldBe "user@email.com"
 
-
                 }
             }
             context("not new email") {
-                every { userRepository.findUserByEmail( any() ) } throws AlreadyExistException()
+                every { memberRepository.findUserByEmail( any() ) } throws AlreadyExistException()
                 every { passwordEncoder.encode( any() ) } returns "encoded password"
-                every { userRepository.save( any() ) } returns User(1, "user name", "user@email.com", "password")
+                every { memberRepository.save( any() ) } returns Member("username", req.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
                 it("throw exception") {
                     val exception = shouldThrow<AlreadyExistException> {
-                        userService.saveUser(req)
+                        memberService.saveMember(req)
                     }
                     exception.message shouldBe "Already Exist"
                 }
@@ -56,9 +56,9 @@ class UserServiceTest: DescribeSpec({
         describe("getUser method") {
             val userId: Long = 1
             context("exist user") {
-                every { userRepository.findUserById( any() ) } returns User(1, "user name", "user@email.com", "password")
+                every { memberRepository.findUserById( any() ) } returns Member("username", "email@email.com", "passcode", "address", null, Role.ROLE_CUSTOMER.name)
                 it("return GetUserResponse") {
-                    val res = userService.getUser(userId)
+                    val res = memberService.getMember(userId)
 
                     res.id shouldBe 1
                     res.name shouldBe "user name"
@@ -66,10 +66,10 @@ class UserServiceTest: DescribeSpec({
                 }
             }
             context("not exist user") {
-                every { userRepository.findUserById( any() ) } returns null
+                every { memberRepository.findUserById( any() ) } returns null
                 it("throw exception") {
                     val exception = shouldThrow<RuntimeException> {
-                        userService.getUser(userId)
+                        memberService.getMember(userId)
                     }
                     exception.message shouldBe "not exist user"
                 }
@@ -79,10 +79,10 @@ class UserServiceTest: DescribeSpec({
             val userId: Long = 1
 
             context("not exist user") {
-                every { userRepository.findUserById( any() ) } returns null
+                every { memberRepository.findUserById( any() ) } returns null
                 it("throw exception") {
                     val exception = shouldThrow<RuntimeException> {
-                        userService.deleteUser(userId)
+                        memberService.deleteMember(userId)
                     }
                     exception.message shouldBe "not exist user"
                 }

@@ -1,6 +1,6 @@
 package com.sgs.ugh.controller.response
 
-class CreateUserResponse(
+data class GetMemberResponse(
     val id: Long,
     val name: String,
     val email: String

@@ -2,9 +2,9 @@ package com.sgs.ugh.controller
 
 import com.sgs.ugh.AbstractIntegrationAppTest
 import com.sgs.ugh.controller.request.SigninRequest
-import com.sgs.ugh.entity.User
-import com.sgs.ugh.repository.UserRepository
-import com.sgs.ugh.security.SecurityTest
+import com.sgs.ugh.entity.Member
+import com.sgs.ugh.repository.MemberRepository
+import com.sgs.ugh.utils.Role
 import io.mockk.every
 import io.mockk.mockk
 import org.slf4j.LoggerFactory
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.post
 @Sql(scripts = ["classpath:testdata.sql"])
 class AuthControllerTest: AbstractIntegrationAppTest() {
     private val log = LoggerFactory.getLogger(AuthControllerTest::class.java)
-    val userRepository = mockk<UserRepository>()
+    val memberRepository = mockk<MemberRepository>()
     val encoder = mockk<PasswordEncoder>()
     init {
 
@@ -27,7 +27,7 @@ class AuthControllerTest: AbstractIntegrationAppTest() {
                     val jsonRequest = mapper.writeValueAsString(request)
                     it("test") {
                         every { encoder.matches(any(), any()) } returns true
-                        every { userRepository.findUserByEmail( any() ) } returns User(1L, "username", request.email, "encoded password")
+                        every { memberRepository.findUserByEmail( any() ) } returns Member("username", request.email, "passcode", "address", null, Role.ROLE_CUSTOMER.name)
 
                         mockMvc.post("/v1/auth/sign-in") {
                             contentType = MediaType.APPLICATION_JSON
