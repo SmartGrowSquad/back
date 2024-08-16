@@ -21,6 +21,6 @@ class Purchase(
     fun updateStatus(status: Int) {
         this.status = status
     }
-    // @TODO passcode 생성 어떻게 할 지 정해야 함
+    // TODO passcode 생성 어떻게 할 지 정해야 함
     fun createPasscode() {}
 }

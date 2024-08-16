@@ -4,7 +4,7 @@ spring:
     active: local
 
 # server
-# @TODO 이게 뭔지 정확하게 더 알아봐야함
+# TODO 이게 뭔지 정확하게 더 알아봐야함
 server:
   tomcat:
     connection-timeout: 30s

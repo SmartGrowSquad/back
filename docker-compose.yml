@@ -1,12 +1,38 @@
 version: '3.0'
 services:
+  back:
+    image: chosh040/ugh-back
+    container_name: back
+    environment:
+      - DEV_DB_HOST=${DEV_DB_HOST}
+      - DEV_DB_PASSWORD=${DEV_DB_PASSWORD}
+      - DEV_DB_USER=${DEV_DB_USER}
+      - DEV_JWT_SECRET_KEY=${DEV_JWT_SECRET_KEY}
+      - DEV_REDIS_HOST=${DEV_REDIS_HOST}
+      - DEV_SERVER_PORT=${DEV_SERVER_PORT}
+    expose:
+      - '8080'
+    networks:
+      - backnetwork
   maradb:
     image: mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
-      - MYSQL_DATABASE= ${DB_NAME}
+      - MYSQL_DATABASE=${DB_NAME}
+    expose:
+      - '3306'
+    networks:
+      - backnetwork
+  nginx:
+    image: chosh040/ughnginx
+    container_name: ughnginx
     ports:
-      - '3306:3306'
+      - '80:80/tcp'
+      - '443:443'
+    networks:
+      - backnetwork
+    depends_on:
+      - back
 #  ugh-green:
 #    container_name: ugh-green
 #    image: ugh-back
@@ -23,3 +49,7 @@ services:
 #    ports:
 #      - '80:80/tcp'
 #      - '443:443'
+
+networks:
+  backnetwork:
+  monitornetwork:

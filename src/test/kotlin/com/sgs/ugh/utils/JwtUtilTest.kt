@@ -22,7 +22,7 @@ class JwtUtilTest: DescribeSpec({
         describe("createAccessToken method") {
 
             context("토큰 생성") {
-                // @TODO 테스트 실패 수정
+                // TODO 테스트 실패 수정
                 it("방금 생성된 토큰은 유효하다") {
                     val act = jwtUtil.createAccessToken(userDto)
                     val jwt = Jwts.parser()

@@ -53,7 +53,8 @@ class SecurityConfig(
                         "/v1/user/create-user",
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        "/api-docs"
                     ).permitAll() // 인증 없이 허용
                     .anyRequest().authenticated()  // 모든 요청에 대해 인증 요구
             }

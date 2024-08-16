@@ -19,7 +19,7 @@ class MemberControllerTest: AbstractIntegrationAppTest() {
     val memberRepository = mockk<MemberRepository>()
     val encoder = mockk<PasswordEncoder>()
     init {
-        // @TODO 테스트 코드 수정
+        // TODO 테스트 코드 수정
         describe("유저 컨트롤러 테스트") {
             describe("user get test") {
                 val userId: Long = 1
