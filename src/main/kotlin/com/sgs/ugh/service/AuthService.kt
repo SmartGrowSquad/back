@@ -3,6 +3,7 @@ package com.sgs.ugh.service
 import com.sgs.ugh.controller.request.SigninRequest
 import com.sgs.ugh.controller.response.SigninResponse
 import com.sgs.ugh.dto.CustomerDto
+import com.sgs.ugh.exception.MemberNotFoundException
 import com.sgs.ugh.repository.MemberRepository
 import com.sgs.ugh.utils.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,11 +16,12 @@ class AuthService(
     private val jwtUtil: JwtUtil
 ) {
     fun signin(req: SigninRequest): SigninResponse {
-        val user = memberRepository.findUserByEmail(req.email) ?: throw RuntimeException("not found")
+        val member = memberRepository.findMemberByEmail(req.email) ?: throw MemberNotFoundException()
 
-        encoder.matches(user.password, req.password) ?: throw RuntimeException()
+        encoder.matches(member.password, req.password) ?: throw RuntimeException()
 
-        val userDto = CustomerDto(user.id!!, user.name, user.email, user.password)
+        val userDto = CustomerDto(member.id!!, member.name, member.email, member.password, member.role)
+
         val accessToken = jwtUtil.createAccessToken(userDto)
         val refreshToken = jwtUtil.createRefreshToken(userDto)
 

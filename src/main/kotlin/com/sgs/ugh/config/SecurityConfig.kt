@@ -48,7 +48,13 @@ class SecurityConfig(
             // 권한 규칙 작성. 메서드 단위 보안 수준 사용
             .authorizeHttpRequests { authz ->
                 authz
-                    .requestMatchers("/v1/auth/**", "/v1/user/create-user").permitAll() // 인증 없이 허용
+                    .requestMatchers(
+                        "/v1/auth/**",
+                        "/v1/user/create-user",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                    ).permitAll() // 인증 없이 허용
                     .anyRequest().authenticated()  // 모든 요청에 대해 인증 요구
             }
 

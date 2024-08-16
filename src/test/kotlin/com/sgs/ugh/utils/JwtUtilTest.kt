@@ -7,10 +7,12 @@ import io.jsonwebtoken.security.Keys
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import javax.crypto.SecretKey
-
 class JwtUtilTest: DescribeSpec({
-    val secretKey = "7e8439e771be369dcb8b25ef00a2ea8782511c68260671ac75fcf8459a068618cd2eedf9880b44a2a677cde5f5f85419bf5b264aecf084e5017b2b86451e6e1c"
+    val secretKey = System.getenv("JWT_SECRET_KEY")
     val key: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
     val jwtUtil = JwtUtil(secretKey, 100000, 100000)
     val userDto = CustomerDto(1, "name",  "encoded password", "test@email.com", Role.ROLE_CUSTOMER.name)
@@ -20,7 +22,7 @@ class JwtUtilTest: DescribeSpec({
         describe("createAccessToken method") {
 
             context("토큰 생성") {
-
+                // @TODO 테스트 실패 수정
                 it("방금 생성된 토큰은 유효하다") {
                     val act = jwtUtil.createAccessToken(userDto)
                     val jwt = Jwts.parser()
@@ -45,7 +47,7 @@ class JwtUtilTest: DescribeSpec({
                 }
             }
         }
-        describe("") {
+        xdescribe("") {
             context("RFT 재발급") {
 
             }

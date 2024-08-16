@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 class UghApplication
 
 fun main(args: Array<String>) {
+
 	runApplication<UghApplication>(*args)
 }

@@ -10,16 +10,16 @@ import io.mockk.mockk
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
-@Sql(scripts = ["classpath:testdata.sql"])
+//@Sql(scripts = ["classpath:testdata.sql"])
 class MemberControllerTest: AbstractIntegrationAppTest() {
     private val log = LoggerFactory.getLogger(MemberControllerTest::class.java)
     val memberRepository = mockk<MemberRepository>()
     val encoder = mockk<PasswordEncoder>()
     init {
+        // @TODO 테스트 코드 수정
         describe("유저 컨트롤러 테스트") {
             describe("user get test") {
                 val userId: Long = 1

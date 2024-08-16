@@ -30,7 +30,7 @@ dependencies {
 	implementation("org.apache.kafka:kafka-streams")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
 	//jwt
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")

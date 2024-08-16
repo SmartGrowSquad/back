@@ -1,21 +1,21 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: prod
   data:
     redis:
-      host: ${DEV_REDIS_HOST}
-      port: ${DEV_REDIS_PORT}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       repositories:
         enabled: false
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ${DEV_DB_HOST}
-    username: ${DEV_DB_USER}
-    password: ${DEV_DB_PASSWORD}
+    url: ${DB_HOST}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
@@ -23,9 +23,9 @@ spring:
         show_sql: true
   docker:
     compose:
-      lifecycle-management: start_and_stop
+      lifecycle-management: none
 jwt:
-  secret-key: ${DEV_JWT_SECRET_KEY}
+  secret-key: ${JWT_SECRET_KEY}
   expired_time: 86400000
   refresh_time: 1209600033
 
@@ -36,4 +36,4 @@ management:
         include: health, info, metrics, prometheus
 
 server:
-  port: ${DEV_SERVER_PORT}
+  port: 8081

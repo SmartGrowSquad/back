@@ -2,25 +2,26 @@ package com.sgs.ugh.utils
 
 import com.sgs.ugh.dto.CustomerDto
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
+
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import java.security.Key
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.env.Environment
+import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
 import java.util.*
 import javax.crypto.SecretKey
 
 @Component
 class JwtUtil(
-    @Value("\${jwt.secret-key}") private val secretKey: String,
-    @Value("\${jwt.expired_time}") private val expireTime: Long,
-    @Value("\${jwt.refresh_time}") private val refreshTime: Long,
+    @Value("\${jwt.secret-key}") private var secretKey: String,
+    @Value("\${jwt.expired_time}") private var expireTime: Long,
+    @Value("\${jwt.refresh_time}") private var refreshTime: Long,
 ) {
+
     private val key: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
     private val log = LoggerFactory.getLogger(JwtUtil::class.java)
-
     fun createAccessToken(user: CustomerDto): String {
         return createToken(user, expireTime)
     }

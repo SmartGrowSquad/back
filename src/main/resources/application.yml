@@ -1,7 +1,10 @@
+# 기본 프로필은 local
 spring:
   profiles:
     active: local
 
+# server
+# @TODO 이게 뭔지 정확하게 더 알아봐야함
 server:
   tomcat:
     connection-timeout: 30s
@@ -13,10 +16,20 @@ server:
       suffix: log
       prefix: access_log
       rename-on-rotate: true
+
+# cors
 cors:
   allowed-origins:
-    local: http://localhost:3000
-jwt:
-  secret-key: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-  expired_time: 86400000
-  refresh_time: 1209600033
+    local: 'http://localhost:3000'
+
+# spring doc configuration
+springdoc:
+  packages-to-scan: com.sgs.ugh
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /api-docs
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+  title: 'ugh'

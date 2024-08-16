@@ -23,17 +23,15 @@ spring:
         show_sql: true
   docker:
     compose:
-      lifecycle-management: start_and_stop
+      lifecycle-management: none
 jwt:
   secret-key: ${DEV_JWT_SECRET_KEY}
   expired_time: 86400000
   refresh_time: 1209600033
-
 management:
   endpoints:
     web:
       exposure:
         include: health, info, metrics, prometheus
-
 server:
   port: ${DEV_SERVER_PORT}

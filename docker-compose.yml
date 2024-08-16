@@ -1,6 +1,25 @@
 version: '3.0'
 services:
-  ugh-spring:
-    image: 097c8f8f460730e60e2b696d133b87e78f3edd692e170896062df03fa2353253
+  maradb:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE= ${DB_NAME}
     ports:
-      - "8080:8080"
+      - '3306:3306'
+#  ugh-green:
+#    container_name: ugh-green
+#    image: ugh-back
+#    expose:
+#      - 8081
+#  ugh-blue:
+#    container_name: ugh-blue
+#    image: ugh-back
+#    expose:
+#      - 8081
+#  nginx:
+#    container_name: nginx
+#    image: chosh040/my-nginx
+#    ports:
+#      - '80:80/tcp'
+#      - '443:443'

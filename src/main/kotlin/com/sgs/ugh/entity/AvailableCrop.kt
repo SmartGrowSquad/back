@@ -27,7 +27,7 @@ class AvailableCrop(
     var status: Boolean = true,
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "u_id")
     val urbani: Urbani
 ): MutableEntity() {
     fun decreaseAmount(amount: Int) {

@@ -3,11 +3,16 @@ package com.sgs.ugh.controller
 import com.sgs.ugh.controller.request.CreateMemberRequest
 import com.sgs.ugh.dto.MemberDto
 import com.sgs.ugh.service.MemberService
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * 멤버 컨트롤러
+ */
+@Tag(name = "Member Api")
 @RestController
 @RequestMapping("/v1/user")
 class MemberController(

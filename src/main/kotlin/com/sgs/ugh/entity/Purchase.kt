@@ -15,7 +15,7 @@ class Purchase(
     val passcode: String,
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "m_id")
     val member: Member
 ): MutableEntity() {
     fun updateStatus(status: Int) {
