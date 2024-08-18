@@ -1,9 +1,13 @@
-package com.sgs.ugh.exception
+package com.sgs.ugh.exception.handler
 
+import com.sgs.ugh.exception.AlreadyExistException
+import com.sgs.ugh.exception.BadRequestException
+import com.sgs.ugh.exception.MemberNotFoundException
 import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -40,7 +44,10 @@ class ExceptionHandler {
     fun handleMemberNotFoundException(ex: MemberNotFoundException): ResponseEntity<MemberNotFoundException>{
         return ResponseEntity(MemberNotFoundException(), HttpStatus.NOT_FOUND)
     }
-
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<AccessDeniedException>{
+        return ResponseEntity(AccessDeniedException("Security Denied Access"), HttpStatus.FORBIDDEN)
+    }
     /**
      * fall back Exception
      */

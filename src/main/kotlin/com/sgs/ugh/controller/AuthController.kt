@@ -34,7 +34,6 @@ class AuthController(
         response.setHeader("Authorization", tokens.accessToken)
         response.setHeader("rft", tokens.refreshToke)
 
-        log.info("login request come ${req.email}")
 
         return ResponseEntity.ok().body("accessed!")
     }

@@ -25,23 +25,10 @@ class MemberControllerTest(
             memberRepository.save(Member("member3", "member3@google.com", passwordEncoder.encode("7890"), "서울특별시 도림로 22길 8 104-1401", null, "ROLE_CUSTOMER"))
             memberRepository.save(Member("member4", "member4@google.com", passwordEncoder.encode("2345"), "서울특별시 도림로 22길 8 101-1401", null, "ROLE_CUSTOMER"))
         }
-        // TODO 테스트 코드 수정
+
         describe("유저 컨트롤러 테스트") {
             describe("user get test") {
                 val memberId: Long = 1L
-                it("로그인이 성공하면 JWT 가 반환됨") {
-                    val request = SigninRequest("member1@google.com", "1234")
-                    val jsonRequest = mapper.writeValueAsString(request)
-
-                    val response = mockMvc.post("/v1/auth/sign-in") {
-                        contentType = MediaType.APPLICATION_JSON
-                        accept = MediaType.APPLICATION_JSON
-                        content = jsonRequest
-                    }.andReturn()
-
-                    log.info(response.response.contentAsString)
-
-                }
 
                 context("인증 받은 사용자") {
                     val request = SigninRequest("member1@google.com", "1234")
@@ -59,7 +46,6 @@ class MemberControllerTest(
                             header("rft", "Bearer " + response.response.getHeaderValue("rft")!!)
                         }.andExpect { status { isOk() } }
                             .andDo { print() }
-
                     }
                 }
                 context("인증 받지 않은 사용자가 getUser") {

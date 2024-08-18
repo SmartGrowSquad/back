@@ -19,7 +19,7 @@ class Urbani(
     var location: String,
 
     @Column(nullable = true)
-    var cLocate: String,
+    var cLocate: String? = null,
 
     @Column(name = "day_of_week")
     var dayOfWeek: String,
@@ -31,6 +31,6 @@ class Urbani(
     var closeTime: LocalTime,
 
     @OneToMany(mappedBy = "urbani")
-    var availableCrop: MutableSet<AvailableCrop>
+    var availableCrop: MutableSet<AvailableCrop> = mutableSetOf()
 
 ): MutableEntity()

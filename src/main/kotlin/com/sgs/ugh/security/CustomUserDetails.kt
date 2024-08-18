@@ -9,7 +9,7 @@ class CustomUserDetails(
     private val user: CustomerDto
 ): UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        val roles = listOf("ROLE_CUSTOMER", "ROLE_ADMIN")
+        val roles = listOf(user.role)
         return roles.map { SimpleGrantedAuthority( it ) }
     }
     override fun getPassword(): String {
