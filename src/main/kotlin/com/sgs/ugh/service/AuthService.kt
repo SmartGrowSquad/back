@@ -18,9 +18,9 @@ class AuthService(
     fun signin(req: SigninRequest): SigninResponse {
         val member = memberRepository.findMemberByEmail(req.email) ?: throw MemberNotFoundException()
 
-        encoder.matches(member.password, req.password) ?: throw RuntimeException()
+        encoder.matches(req.password, member.password) ?: throw RuntimeException()
 
-        val userDto = CustomerDto(member.id!!, member.name, member.email, member.password, member.role)
+        val userDto = CustomerDto(member.id!!, member.name, member.password, member.email, member.role)
 
         val accessToken = jwtUtil.createAccessToken(userDto)
         val refreshToken = jwtUtil.createRefreshToken(userDto)

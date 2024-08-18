@@ -80,6 +80,7 @@ class JwtUtil(
      */
     fun validateToken(token: String): Boolean {
         return try {
+            log.debug("valid Token")
             Jwts.parser()
                 .verifyWith(key)
                 .build()

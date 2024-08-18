@@ -12,5 +12,5 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 }

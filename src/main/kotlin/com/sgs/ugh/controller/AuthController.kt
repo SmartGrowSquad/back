@@ -31,8 +31,9 @@ class AuthController(
     ): ResponseEntity<String> {
         val tokens = authService.signin(req)
 
-        response.setHeader("Authorization", "Bearer " + tokens.accessToken)
-        response.setHeader("RFT", "Bearer " + tokens.refreshToke)
+        response.setHeader("Authorization", tokens.accessToken)
+        response.setHeader("rft", tokens.refreshToke)
+
         log.info("login request come ${req.email}")
 
         return ResponseEntity.ok().body("accessed!")

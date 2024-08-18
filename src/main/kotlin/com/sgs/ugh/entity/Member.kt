@@ -8,7 +8,7 @@ import jakarta.persistence.OneToMany
 @Entity(name = "member")
 class Member(
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
     var email: String,
@@ -23,12 +23,10 @@ class Member(
     var cLocate: String?,
 
     @Column(nullable = false)
-    val role: String,
+    var role: String,
 
     @OneToMany(mappedBy = "member")
-    val purchases: MutableSet<Purchase> = mutableSetOf()
-
-
+    var purchases: MutableSet<Purchase> = mutableSetOf()
 ): MutableEntity() {
     fun updateEmail(updatedEmail: String) {
         this.email = updatedEmail

@@ -1,1 +1,0 @@
-insert into member(name, email, password, address, cLocate, role) values('test name', 'email@email.com', 'password''address', 'cLocate', 'ROLE_CUSTOMER' )

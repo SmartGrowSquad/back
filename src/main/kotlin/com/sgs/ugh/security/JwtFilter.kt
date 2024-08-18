@@ -35,20 +35,19 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+
         val authorizationHeader = request.getHeader("Authorization")
         val refreshToken = request.getHeader("rft")
-
         // JWT is present in the header
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             val token = authorizationHeader.substring(7)
-
             // Validate the JWT token
             try {
                 if(jwtUtil.validateToken(token)) {
                     val userEmail = jwtUtil.getUserEmail(token)
-
+                    log.info(userEmail)
                     // Create userDetails if the user and token match
-                    val userDetails = customUserDetailsService.loadUserByUsername(userEmail.toString())
+                    val userDetails = customUserDetailsService.loadUserByUsername(userEmail!!)
 
                     if (userDetails != null) {
 
@@ -86,6 +85,7 @@ class JwtFilter(
 
                 }
             } catch(e: Exception) {
+                log.warn(e.message)
                 log.warn("filter exception")
             }
         }

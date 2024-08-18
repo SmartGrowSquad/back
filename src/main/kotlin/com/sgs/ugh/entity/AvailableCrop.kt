@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne
 @Entity(name = "available_crop")
 class AvailableCrop(
     @Column(name="name")
-    val name: String,
+    var name: String,
 
     @Column(name="price")
     var price: Double,

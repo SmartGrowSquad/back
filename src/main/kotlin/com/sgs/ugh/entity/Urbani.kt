@@ -13,24 +13,24 @@ import java.time.LocalTime
 @Entity(name = "urbani")
 class Urbani(
     @Column(name = "name")
-    val name: String,
+    var name: String,
 
     @Column(name = "location")
-    val location: String,
+    var location: String,
 
     @Column(nullable = true)
-    val cLocate: String,
+    var cLocate: String,
 
     @Column(name = "day_of_week")
-    val dayOfWeek: String,
+    var dayOfWeek: String,
 
     @Column(name ="open_time")
-    val openTime: LocalTime,
+    var openTime: LocalTime,
 
     @Column(name ="close_time")
-    val closeTime: LocalTime,
+    var closeTime: LocalTime,
 
     @OneToMany(mappedBy = "urbani")
-    val availableCrop: MutableSet<AvailableCrop>
+    var availableCrop: MutableSet<AvailableCrop>
 
 ): MutableEntity()

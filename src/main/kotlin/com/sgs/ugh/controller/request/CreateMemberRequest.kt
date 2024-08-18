@@ -1,5 +1,6 @@
 package com.sgs.ugh.controller.request
 
+import com.sgs.ugh.utils.Role
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -19,4 +20,5 @@ data class CreateMemberRequest(
     @NotNull
     val address: String,
 
+    val role: String = Role.ROLE_CUSTOMER.name
 )

@@ -25,12 +25,9 @@ class JwtUtilTest: DescribeSpec({
                 // TODO 테스트 실패 수정
                 it("방금 생성된 토큰은 유효하다") {
                     val act = jwtUtil.createAccessToken(userDto)
-                    val jwt = Jwts.parser()
-                        .verifyWith(key)
-                        .build()
-                        .parseSignedClaims(act).payload
+                    val userEmail = jwtUtil.getUserEmail(act)
 
-                    jwt shouldBe userDto.email
+                    userEmail shouldBe userDto.email
                }
             }
         }
@@ -47,7 +44,7 @@ class JwtUtilTest: DescribeSpec({
                 }
             }
         }
-        xdescribe("") {
+        xdescribe("t") {
             context("RFT 재발급") {
 
             }

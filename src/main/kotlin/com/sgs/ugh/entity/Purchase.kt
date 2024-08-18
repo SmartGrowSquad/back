@@ -6,17 +6,17 @@ import jakarta.persistence.*
 @Entity(name = "purchase")
 class Purchase(
     @Column(name="amount")
-    val amount: Int,
+    var amount: Int,
 
     @Column(name="status")
     var status: Int,
 
     @Column(name="passcode")
-    val passcode: String,
+    var passcode: String,
 
     @ManyToOne
     @JoinColumn(name = "m_id")
-    val member: Member
+    var member: Member
 ): MutableEntity() {
     fun updateStatus(status: Int) {
         this.status = status

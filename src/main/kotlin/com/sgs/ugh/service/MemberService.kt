@@ -1,6 +1,9 @@
 package com.sgs.ugh.service
 
 import com.sgs.ugh.controller.request.CreateMemberRequest
+import com.sgs.ugh.controller.request.UpdateMemberAddressRequest
+import com.sgs.ugh.controller.request.UpdateMemberEmailRequest
+import com.sgs.ugh.controller.response.CreateMemberResponse
 import com.sgs.ugh.dto.MemberDto
 import com.sgs.ugh.entity.Member
 import com.sgs.ugh.exception.AlreadyExistException
@@ -18,29 +21,30 @@ class MemberService(
     private val passwordEncoder: PasswordEncoder
 ) {
     private val log = LoggerFactory.getLogger(MemberService::class.java)
+
     /**
-     * 유저 생성
+     * 멤버 생성
      * @param req [CreateMemberRequest]
      * @return [CreateMemberRequest]
      *
      */
-    fun saveMember(req: CreateMemberRequest): com.sgs.ugh.controller.response.CreateMemberResponse {
-        val encodedPassword = passwordEncoder.encode(req.password)
+    fun saveMember(req: CreateMemberRequest): CreateMemberResponse {
+        val encodedPassword = passwordEncoder.encode(req.password) ?: throw RuntimeException("Fail to encoding password")
 
-        val user = Member(
-            name = req.name,
-            email = req.email,
-            password = encodedPassword,
-            address = req.address,
-            cLocate = null,
-            role = Role.ROLE_ADMIN.name,
+        memberRepository.findMemberByEmail(req.email)?.let { throw AlreadyExistException() }
+
+        val savedUser = memberRepository.save(
+            Member(
+                req.name,
+                req.email,
+                encodedPassword,
+                req.address,
+                null,
+                req.role,
+            )
         )
 
-        memberRepository.findMemberByEmail(user.email)?.let { throw AlreadyExistException() }
-
-        val savedUser = memberRepository.save(user)
-
-        return com.sgs.ugh.controller.response.CreateMemberResponse(
+        return CreateMemberResponse(
             savedUser.id!!,
             savedUser.name,
             savedUser.email
@@ -53,8 +57,8 @@ class MemberService(
      * @return [MemberDto]
      * @exception RuntimeException
      */
-    fun getMemberDetail(userId: Long): MemberDto {
-        val foundMember = memberRepository.findMemberById(userId) ?: throw MemberNotFoundException()
+    fun getMemberDetail(memberId: Long): MemberDto {
+        val foundMember = memberRepository.findMemberById(memberId) ?: throw MemberNotFoundException()
 
         return MemberDto(
             foundMember.id!!,
@@ -64,7 +68,51 @@ class MemberService(
             foundMember.purchases,
         )
     }
-    fun updateUser() {}
+
+    /**
+     *  update member email
+     */
+    @Transactional
+    fun updateMemberEmail(req: UpdateMemberEmailRequest): MemberDto {
+        val foundMember = memberRepository.findMemberById(req.id) ?: throw MemberNotFoundException()
+
+        foundMember.updateEmail(req.email)
+
+        try {
+           val updatedMember =  memberRepository.save(foundMember)
+
+            return MemberDto(
+                updatedMember.id!!,
+                updatedMember.name,
+                updatedMember.email,
+                updatedMember.address,
+                updatedMember.purchases,
+            )
+        } catch (e: RuntimeException) { throw RuntimeException("Unknown error in update member email service") }
+    }
+
+    /**
+     * update member address
+     */
+    @Transactional
+    fun updateMemberAddress(req: UpdateMemberAddressRequest): MemberDto {
+        val foundMember = memberRepository.findMemberById(req.id) ?: throw MemberNotFoundException()
+
+        foundMember.updateAddress(req.address)
+
+        try {
+            val updatedMember =  memberRepository.save(foundMember)
+
+            return MemberDto(
+                updatedMember.id!!,
+                updatedMember.name,
+                updatedMember.email,
+                updatedMember.address,
+                updatedMember.purchases,
+            )
+        } catch (e: Exception) { throw RuntimeException("Unknown error in update member address service") }
+
+    }
     /**
      * 유저 삭제
      * @param userId [Long]
@@ -72,8 +120,12 @@ class MemberService(
      * @exception RuntimeException
      */
     @Transactional
-    fun deleteMember(userId: Long) {
-        memberRepository.findMemberById(userId) ?: throw RuntimeException("not exist user")
-        memberRepository.deleteById(userId)
+    fun deleteMember(memberId: Long) {
+        memberRepository.findMemberById(memberId) ?: throw MemberNotFoundException()
+
+        try {
+            memberRepository.deleteById(memberId)
+        } catch (e:Exception) { throw RuntimeException("Unknown error in delete member service") }
+
     }
 }

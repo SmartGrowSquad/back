@@ -1,6 +1,9 @@
 package com.sgs.ugh.controller
 
 import com.sgs.ugh.controller.request.CreateMemberRequest
+import com.sgs.ugh.controller.request.UpdateMemberAddressRequest
+import com.sgs.ugh.controller.request.UpdateMemberEmailRequest
+import com.sgs.ugh.controller.response.CreateMemberResponse
 import com.sgs.ugh.dto.MemberDto
 import com.sgs.ugh.service.MemberService
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -14,18 +17,17 @@ import org.springframework.web.bind.annotation.*
  */
 @Tag(name = "Member Api")
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1/member")
 class MemberController(
     private val memberService: MemberService
 ) {
     @PostMapping("/create-member")
     fun createMember(
         @Valid @RequestBody req: CreateMemberRequest
-    ): ResponseEntity<com.sgs.ugh.controller.response.CreateMemberResponse> {
-        val result: com.sgs.ugh.controller.response.CreateMemberResponse = memberService.saveMember(req)
+    ): ResponseEntity<CreateMemberResponse> {
+        val result: CreateMemberResponse = memberService.saveMember(req)
         return ResponseEntity(result, HttpStatus.CREATED)
     }
-
     @GetMapping("/{memberId}")
     fun getMember(
         @PathVariable memberId: Long
@@ -34,6 +36,20 @@ class MemberController(
         return ResponseEntity(memberDetail, HttpStatus.OK)
     }
 
+    @PostMapping("/update-user/address")
+    fun updateUserAddress(
+        @Valid @RequestBody req: UpdateMemberAddressRequest
+    ): ResponseEntity<MemberDto> {
+        val updatedMember = memberService.updateMemberAddress(req)
+        return ResponseEntity(updatedMember, HttpStatus.OK )
+    }
+    @PostMapping("/update-user/email")
+    fun updateUserEmail(
+        @Valid @RequestBody req: UpdateMemberEmailRequest
+    ): ResponseEntity<MemberDto> {
+        val updatedMember = memberService.updateMemberEmail(req)
+        return ResponseEntity(updatedMember, HttpStatus.OK )
+    }
     @DeleteMapping("/delete-user/{userId}")
     fun deleteMember(
         @PathVariable userId: Long
