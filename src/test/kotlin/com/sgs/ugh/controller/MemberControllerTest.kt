@@ -4,9 +4,6 @@ import com.sgs.ugh.AbstractIntegrationAppTest
 import com.sgs.ugh.controller.request.SigninRequest
 import com.sgs.ugh.entity.Member
 import com.sgs.ugh.repository.MemberRepository
-import io.kotest.assertions.print.print
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNot
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.password.PasswordEncoder

@@ -16,7 +16,11 @@ class Purchase(
 
     @ManyToOne
     @JoinColumn(name = "m_id")
-    var member: Member
+    var member: Member,
+
+    @ManyToOne
+    @JoinColumn(name = "ac_id")
+    var availableCrop: AvailableCrop
 ): MutableEntity() {
     fun updateStatus(status: Int) {
         this.status = status

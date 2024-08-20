@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.post
 import java.time.LocalTime
 
 class UrbaniControllerTest(
-    private val urbaniRepository: UrbaniRepository,
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val objectMapper: ObjectMapper
@@ -102,6 +101,7 @@ class UrbaniControllerTest(
                     }
                 }
             }
+            describe("어반이 조회") {}
         }
     }
 }

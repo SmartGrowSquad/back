@@ -1,0 +1,10 @@
+package com.sgs.ugh.utils
+
+enum class PurchaseStatusCode {
+    PURCHASE_WAIT_APPROVE,
+    PURCHASE_APPROVED,
+    PURCHASE_DONE,
+    PURCHASE_CANCEL_BY_ADMIN,
+    PURCHASE_CANCEL_REQUESTED,
+    PURCHASE_CANCEL_APPROVE,
+}
